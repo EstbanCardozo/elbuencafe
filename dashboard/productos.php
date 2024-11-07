@@ -731,16 +731,16 @@
           </button>
         </header>
         <!-- Modal body -->
-        <div class="mt-4 mb-6">
+        <div class="mt-4 mb-6 overflow-y-auto max-h-96">
           <!-- Modal title -->
           <p
             class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300"
           >
-            Agregar Productos
+            Agregar Producto
           </p>
           <!-- Modal description -->
           <p class="text-sm text-gray-700 dark:text-gray-400">
-<form action="..\dashboard\ejemplo_guardar.php" method="POST" enctype="multipart/form-data" id="producto-form">
+<form action="..\dashboard\ejemplo_guardar.php" method="POST" enctype="multipart/form-data">
     <!-- Nombre del producto -->
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <label class="block text-sm">
@@ -750,6 +750,7 @@
                 type="text" name="nombre" id="nombre" required
                 placeholder="Ejemplo de Producto"
                 oninput="validateNombre()"
+                maxlength="20"
             />
             <span id="nombre-error" class="text-xs text-red-600 dark:text-red-400 hidden">
                 El nombre no puede superar los 20 caracteres.
@@ -769,6 +770,7 @@
                 name="descripcion" id="descripcion" required
                 placeholder="Descripción del producto"
                 oninput="validateDescripcion()"
+                maxlength="50"
             ></textarea>
             <span id="descripcion-error" class="text-xs text-red-600 dark:text-red-400 hidden">
                 La descripción no puede superar los 50 caracteres.
@@ -788,6 +790,7 @@
                 type="number" name="precio" id="precio" required step="0.01"
                 placeholder="Precio del producto"
                 oninput="validatePrecio()"
+                maxlength="6"
             />
             <span id="precio-error" class="text-xs text-red-600 dark:text-red-400 hidden">
                 El precio no puede superar los 6 caracteres.
@@ -807,6 +810,7 @@
                 type="number" name="stock" id="stock" required
                 placeholder="Stock disponible"
                 oninput="validateStock()"
+                maxlength="10"
             />
             <span id="stock-error" class="text-xs text-red-600 dark:text-red-400 hidden">
                 El stock no puede superar los 10 caracteres.
@@ -854,14 +858,13 @@
         </label>
     </div>
 
-    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" 
+    <button type="submit" class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" 
             id="submit-button" disabled>
         Agregar Producto
     </button>
 </form>
 
 <script>
-    // Validaciones de los campos
     function validateNombre() {
         const nombre = document.getElementById('nombre');
         const errorMessage = document.getElementById('nombre-error');
@@ -921,11 +924,14 @@
     function validateCategoria() {
         const categoria = document.getElementById('categoria');
         const errorMessage = document.getElementById('categoria-error');
+        const submitButton = document.getElementById('submit-button');
         
         if (!categoria.value) {
             errorMessage.classList.remove('hidden');
+            submitButton.disabled = true;
         } else {
             errorMessage.classList.add('hidden');
+            submitButton.disabled = false;
         }
     }
 
@@ -939,23 +945,6 @@
             errorMessage.classList.add('hidden');
         }
     }
-
-    // Validar el formulario antes de enviarlo
-    const form = document.getElementById('producto-form');
-    form.addEventListener('submit', function(event) {
-        if (
-            document.getElementById('nombre-error').classList.contains('hidden') &&
-            document.getElementById('descripcion-error').classList.contains('hidden') &&
-            document.getElementById('precio-error').classList.contains('hidden') &&
-            document.getElementById('stock-error').classList.contains('hidden') &&
-            document.getElementById('categoria-error').classList.contains('hidden') &&
-            document.getElementById('imagen-error').classList.contains('hidden')
-        ) {
-            // El formulario se envía si todas las validaciones son correctas
-        } else {
-            event.preventDefault(); // Evitar el envío si hay errores
-        }
-    });
 </script>
 
           </p>
@@ -969,16 +958,9 @@
           >
             Cancel
           </button>
-          <button
-            class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-          >
-            Accept
-          </button>
         </footer>
       </div>
     </div>
-
-
             <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
               <div class="w-full overflow-x-auto">
               <?php

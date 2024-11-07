@@ -1,6 +1,6 @@
 <?php
 // Incluimos la conexión a la base de datos
-require 'conexion.php';
+require '../conexion.php';
 
 // Verificamos si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -11,6 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stock = $_POST['stock'];
     $categoria = $_POST['categoria'];
     $carpeta_imagenes = 'imagenes/'; // Carpeta donde se guardarán las imágenes
+
+    // Verificamos si la carpeta existe, si no, la creamos
+    if (!is_dir($carpeta_imagenes)) {
+        mkdir($carpeta_imagenes, 0777, true); // Crea la carpeta con permisos adecuados
+    }
 
     // Verificamos si el archivo de imagen fue cargado
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {

@@ -9,6 +9,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./assets/css/tailwind.output.css" />
+    <link rel="stylesheet" href="./assets/css/css.css" />
+
     <script
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer
@@ -24,6 +26,7 @@
     ></script>
     <script src="./assets/js/charts-lines.js" defer></script>
     <script src="./assets/js/charts-pie.js" defer></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=grocery" />
   </head>
   <body>
     <div
@@ -668,11 +671,314 @@
               Productos
             </h2>
             <!-- With avatar -->
-            <h4
-              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
+
+            <div class="botontable" >
+                <h4
+                  class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
+                >
+                  Tabla de stock
+                </h4>
+                <button  @click="openModal" class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                  <span class="material-symbols-outlined ejem"> grocery </span>
+                  <span>Agregar Producto</span>
+                </button>
+            </div>
+            <div
+      x-show="isModalOpen"
+      x-transition:enter="transition ease-out duration-150"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-150"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
+    >
+      <!-- Modal -->
+      <div
+        x-show="isModalOpen"
+        x-transition:enter="transition ease-out duration-150"
+        x-transition:enter-start="opacity-0 transform translate-y-1/2"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0  transform translate-y-1/2"
+        @click.away="closeModal"
+        @keydown.escape="closeModal"
+        class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
+        role="dialog"
+        id="modal"
+      >
+        <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
+        <header class="flex justify-end">
+          <button
+            class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded dark:hover:text-gray-200 hover: hover:text-gray-700"
+            aria-label="close"
+            @click="closeModal"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              role="img"
+              aria-hidden="true"
             >
-              Tabla de stock
-            </h4>
+              <path
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+                fill-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </header>
+        <!-- Modal body -->
+        <div class="mt-4 mb-6">
+          <!-- Modal title -->
+          <p
+            class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300"
+          >
+            Agregar Productos
+          </p>
+          <!-- Modal description -->
+          <p class="text-sm text-gray-700 dark:text-gray-400">
+<form action="..\dashboard\ejemplo_guardar.php" method="POST" enctype="multipart/form-data" id="producto-form">
+    <!-- Nombre del producto -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Nombre del producto:</span>
+            <input
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                type="text" name="nombre" id="nombre" required
+                placeholder="Ejemplo de Producto"
+                oninput="validateNombre()"
+            />
+            <span id="nombre-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                El nombre no puede superar los 20 caracteres.
+            </span>
+            <span id="nombre-valid" class="text-xs text-green-600 dark:text-green-400 hidden">
+                Nombre válido.
+            </span>
+        </label>
+    </div>
+
+    <!-- Descripción -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Descripción:</span>
+            <textarea
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                name="descripcion" id="descripcion" required
+                placeholder="Descripción del producto"
+                oninput="validateDescripcion()"
+            ></textarea>
+            <span id="descripcion-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                La descripción no puede superar los 50 caracteres.
+            </span>
+            <span id="descripcion-valid" class="text-xs text-green-600 dark:text-green-400 hidden">
+                Descripción válida.
+            </span>
+        </label>
+    </div>
+
+    <!-- Precio -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Precio:</span>
+            <input
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                type="number" name="precio" id="precio" required step="0.01"
+                placeholder="Precio del producto"
+                oninput="validatePrecio()"
+            />
+            <span id="precio-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                El precio no puede superar los 6 caracteres.
+            </span>
+            <span id="precio-valid" class="text-xs text-green-600 dark:text-green-400 hidden">
+                Precio válido.
+            </span>
+        </label>
+    </div>
+
+    <!-- Stock -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Stock:</span>
+            <input
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                type="number" name="stock" id="stock" required
+                placeholder="Stock disponible"
+                oninput="validateStock()"
+            />
+            <span id="stock-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                El stock no puede superar los 10 caracteres.
+            </span>
+            <span id="stock-valid" class="text-xs text-green-600 dark:text-green-400 hidden">
+                Stock válido.
+            </span>
+        </label>
+    </div>
+
+    <!-- Categoría(s) -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Categoría(s):</span>
+            <select name="categoria" id="categoria" required
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input" 
+                onchange="validateCategoria()">
+                <option value="">Seleccione una categoría</option>
+                <option value="Bebidas Calientes">Bebidas Calientes</option>
+                <option value="Bebidas Frías">Bebidas Frías</option>
+                <option value="Postres y Repostería">Postres y Repostería</option>
+                <option value="Snacks y Bocadillos">Snacks y Bocadillos</option>
+                <option value="Productos Veganos y Sin Gluten">Productos Veganos y Sin Gluten</option>
+                <option value="Ensaladas y Comidas Ligeras">Ensaladas y Comidas Ligeras</option>
+                <option value="Bebidas Especiales">Bebidas Especiales</option>
+            </select>
+            <span id="categoria-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                Debes seleccionar al menos una categoría.
+            </span>
+        </label>
+    </div>
+
+    <!-- Imagen del producto -->
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Imagen del producto:</span>
+            <input
+                class="block w-full mt-1 text-sm border-gray-300 dark:text-gray-300 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                type="file" name="imagen" id="imagen" accept="image/*" required
+                onchange="validateImagen()"
+            />
+            <span id="imagen-error" class="text-xs text-red-600 dark:text-red-400 hidden">
+                Debes seleccionar una imagen.
+            </span>
+        </label>
+    </div>
+
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" 
+            id="submit-button" disabled>
+        Agregar Producto
+    </button>
+</form>
+
+<script>
+    // Validaciones de los campos
+    function validateNombre() {
+        const nombre = document.getElementById('nombre');
+        const errorMessage = document.getElementById('nombre-error');
+        const validMessage = document.getElementById('nombre-valid');
+        
+        if (nombre.value.length > 20) {
+            errorMessage.classList.remove('hidden');
+            validMessage.classList.add('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+            validMessage.classList.remove('hidden');
+        }
+    }
+
+    function validateDescripcion() {
+        const descripcion = document.getElementById('descripcion');
+        const errorMessage = document.getElementById('descripcion-error');
+        const validMessage = document.getElementById('descripcion-valid');
+        
+        if (descripcion.value.length > 50) {
+            errorMessage.classList.remove('hidden');
+            validMessage.classList.add('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+            validMessage.classList.remove('hidden');
+        }
+    }
+
+    function validatePrecio() {
+        const precio = document.getElementById('precio');
+        const errorMessage = document.getElementById('precio-error');
+        const validMessage = document.getElementById('precio-valid');
+        
+        if (precio.value.length > 6) {
+            errorMessage.classList.remove('hidden');
+            validMessage.classList.add('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+            validMessage.classList.remove('hidden');
+        }
+    }
+
+    function validateStock() {
+        const stock = document.getElementById('stock');
+        const errorMessage = document.getElementById('stock-error');
+        const validMessage = document.getElementById('stock-valid');
+        
+        if (stock.value.length > 10) {
+            errorMessage.classList.remove('hidden');
+            validMessage.classList.add('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+            validMessage.classList.remove('hidden');
+        }
+    }
+
+    function validateCategoria() {
+        const categoria = document.getElementById('categoria');
+        const errorMessage = document.getElementById('categoria-error');
+        
+        if (!categoria.value) {
+            errorMessage.classList.remove('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+        }
+    }
+
+    function validateImagen() {
+        const imagen = document.getElementById('imagen');
+        const errorMessage = document.getElementById('imagen-error');
+        
+        if (!imagen.files.length) {
+            errorMessage.classList.remove('hidden');
+        } else {
+            errorMessage.classList.add('hidden');
+        }
+    }
+
+    // Validar el formulario antes de enviarlo
+    const form = document.getElementById('producto-form');
+    form.addEventListener('submit', function(event) {
+        if (
+            document.getElementById('nombre-error').classList.contains('hidden') &&
+            document.getElementById('descripcion-error').classList.contains('hidden') &&
+            document.getElementById('precio-error').classList.contains('hidden') &&
+            document.getElementById('stock-error').classList.contains('hidden') &&
+            document.getElementById('categoria-error').classList.contains('hidden') &&
+            document.getElementById('imagen-error').classList.contains('hidden')
+        ) {
+            // El formulario se envía si todas las validaciones son correctas
+        } else {
+            event.preventDefault(); // Evitar el envío si hay errores
+        }
+    });
+</script>
+
+          </p>
+        </div>
+        <footer
+          class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800"
+        >
+          <button
+            @click="closeModal"
+            class="w-full px-5 py-3 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+          >
+            Cancel
+          </button>
+          <button
+            class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+          >
+            Accept
+          </button>
+        </footer>
+      </div>
+    </div>
+
+
             <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
               <div class="w-full overflow-x-auto">
               <?php
@@ -695,7 +1001,7 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th class="px-4 py-3">Nombre Producto</th>
       <th class="px-4 py-3">Precio</th>
       <th class="px-4 py-3">Status</th>
-      <th ="px-4 py-3">Categoría</th>
+      <th class="px-4 py-3">Categoría</th>
       <th class="px-4 py-3">Stock</th>
       <th class="px-4 py-3">Acción</th>
     </tr>
@@ -722,9 +1028,17 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
           $<?php echo number_format($producto['precio'], 2); ?>
         </td>
         <td class="px-4 py-3 text-xs">
-          <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-            Disponible
-          </span>
+          <!-- Status con base en el stock -->
+          <?php
+            $stock = $producto['stock'];
+            if ($stock > 20) {
+                echo '<span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">Disponible</span>';
+            } elseif ($stock > 0 && $stock <= 20) {
+                echo '<span class="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full dark:text-gray-100 dark:bg-gray-700">Próximo</span>';
+            } else {
+                echo '<span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600">Agotado</span>';
+            }
+          ?>
         </td>
         <td class="px-4 py-3 text-sm">
           <?php echo $producto['categoria']; ?>
@@ -750,7 +1064,6 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
   </tbody>
 </table>
-
 
               </div>
               <div

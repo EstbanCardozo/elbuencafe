@@ -1,0 +1,11 @@
+.botontable{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.ejem{
+    margin-right: 1rem;
+}
+.ejem2{
+    margin-top: 500;
+}
